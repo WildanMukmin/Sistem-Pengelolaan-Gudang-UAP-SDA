@@ -1,16 +1,14 @@
 import csv
 
 def readFileCsv(fileName):
-    with open(fileName, 'r') as filename:
-        data = csv.reader(filename)
-        for row in data:
-            print(row)    
-
-def readFileCsvKolom(fileName, index):
-    with open(fileName, 'r') as filename:
-        data = csv.reader(filename)
-        for row in data:
-            print(row[index])    
+    items = []
+    with open(fileName, 'r') as file:
+        reader = csv.reader(file)
+        next(reader)
+        for row in reader:
+            if len(row) == 4:
+                items.append(Item(row[0], row[1], row[2], row[3]))
+    return items
 
 def mergeSort(arr, parameter):
     if len(arr) <= 1:
@@ -58,21 +56,24 @@ class Item:
 
 class Gudang:
     def __init__(self):
-        self.header = ['ID', 'Name', 'Quantity', 'Price']
-        self.items = []
+        self.items = readFileCsv("items.csv")
         
     def addItem(self, id, name, quantity, price):
         self.items.append(Item(id, name, quantity, price))
         self.updateFileCsv()
         
-    def removeItem(self, name):
+    def removeItemByName(self, name):
         self.items = [item for item in self.items if item.name != name]
+        self.updateFileCsv()
+    
+    def removeItemById(self, id):
+        self.items = [item for item in self.items if item.id != id]
         self.updateFileCsv()
     
     def updateFileCsv(self):
         with open("items.csv", "w", newline='', encoding="utf-8") as file:
             writer = csv.writer(file)
-            writer.writerow(self.header)
+            writer.writerow(['id', 'name', 'quantity', 'price'])  # Add header row
             for item in self.items:
                 writer.writerow(item.to_list())
                 
@@ -84,15 +85,27 @@ class Gudang:
         self.items = mergeSort(self.items, 'quantity')
         self.updateFileCsv()
 
+    def sortById(self):
+        self.items = mergeSort(self.items, 'id')
+        self.updateFileCsv()
+
+
+
+
+# Testing the Gudang class
 listBarang = Gudang()
 
-listBarang.addItem("p001", "pisang", 100, 10120)
-listBarang.addItem("p002", "anu", 0, 10340)
-listBarang.addItem("p003", "asak", 1010, 10210)
-listBarang.addItem("p004", "aslja", 40, 101210)
-listBarang.addItem("p005", "adjad", 1, 150)
+# Uncomment to add items
+# listBarang.addItem("p001", "pisang", 100, 10120)
+# listBarang.addItem("p002", "anu", 0, 10340)
+# listBarang.addItem("p003", "asak", 1010, 10210)
+# listBarang.addItem("p004", "aslja", 40, 101210)
+# listBarang.addItem("p005", "adjad", 1, 150)
 
 # listBarang.sortByQuantity()
-listBarang.sortByPrice()
-
+# listBarang.sortByPrice()
+listBarang.sortById()
+listBarang.addItem("p101", "Item101", 100, 20000)
+listBarang.removeItemById("p101")
+# Uncomment to remove an item
 # listBarang.removeItem("anu")
