@@ -1,5 +1,7 @@
 import csv
 
+# <---------------------- Akses File ---------------------->
+
 def readFileCsv(fileName):
     items = []
     with open(fileName, 'r') as file:
@@ -9,6 +11,11 @@ def readFileCsv(fileName):
             if len(row) == 4:
                 items.append(Item(row[0], row[1], row[2], row[3]))
     return items
+
+# <---------------------- End Akses File ---------------------->
+
+
+# <---------------------- Algoritma Sorting ---------------------->
 
 def mergeSort(arr, parameter):
     if len(arr) <= 1:
@@ -44,6 +51,35 @@ def merge(left, right, parameter):
     
     return result
 
+# <---------------------- End Algoritma Sorting ---------------------->
+
+
+# <---------------------- Algoritma Search ---------------------->
+
+def binarySearch(arr, target_id):
+    left, right = 0, len(arr) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+        current_id = arr[mid].id
+        
+        # # Debug: Tampilkan nilai left, right, dan mid
+        # print(f"left: {left}, right: {right}, mid: {mid}, current_id: {current_id}")
+        
+        if current_id == target_id:
+            return mid
+        elif current_id < target_id:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
+
+# <---------------------- Algoritma Search ---------------------->
+
+
+# <---------------------- Class Item dan Gudang ---------------------->
+
 class Item:
     def __init__(self, id, name, quantity, price):
         self.id = id
@@ -55,9 +91,15 @@ class Item:
         return [self.id, self.name, self.quantity, self.price]
 
 class Gudang:
+# <---------------------- Constructor ---------------------->
+    
     def __init__(self):
         self.items = readFileCsv("items.csv")
         
+# <---------------------- End Constructor ---------------------->
+        
+# <---------------------- Method CRUD ---------------------->
+
     def addItem(self, id, name, quantity, price):
         self.items.append(Item(id, name, quantity, price))
         self.updateFileCsv()
@@ -76,7 +118,11 @@ class Gudang:
             writer.writerow(['id', 'name', 'quantity', 'price'])  # Add header row
             for item in self.items:
                 writer.writerow(item.to_list())
-                
+
+# <---------------------- End Method CRUD ---------------------->
+
+# <---------------------- Method Tambahan ---------------------->
+
     def sortByPrice(self):
         self.items = mergeSort(self.items, 'price')
         self.updateFileCsv()
@@ -88,24 +134,31 @@ class Gudang:
     def sortById(self):
         self.items = mergeSort(self.items, 'id')
         self.updateFileCsv()
+    
+    def SeacrhItemById(self, id):
+        self.sortById()
+        index = binarySearch(self.items, id)
+        if index != -1:
+            return self.items[index]
+        return None
+    
+# <---------------------- End Method Tambahan ---------------------->
+
+# <---------------------- End Class Item dan Gudang ---------------------->
 
 
-
+# <---------------------- Main program ---------------------->
 
 # Testing the Gudang class
 listBarang = Gudang()
 
-# Uncomment to add items
-# listBarang.addItem("p001", "pisang", 100, 10120)
-# listBarang.addItem("p002", "anu", 0, 10340)
-# listBarang.addItem("p003", "asak", 1010, 10210)
-# listBarang.addItem("p004", "aslja", 40, 101210)
-# listBarang.addItem("p005", "adjad", 1, 150)
 
-# listBarang.sortByQuantity()
-# listBarang.sortByPrice()
 listBarang.sortById()
-listBarang.addItem("p101", "Item101", 100, 20000)
-listBarang.removeItemById("p101")
-# Uncomment to remove an item
-# listBarang.removeItem("anu")
+# listBarang.addItem("p101", "Item101", 100, 20000)
+# listBarang.removeItemById("p101")
+# print(listBarang.SeacrhItemById("p067"))
+
+# barang = listBarang.SeacrhItemById("p067")
+# print(barang.to_list())
+
+# <---------------------- End Main program ---------------------->
