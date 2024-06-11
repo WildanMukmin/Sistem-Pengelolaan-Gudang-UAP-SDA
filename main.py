@@ -141,6 +141,13 @@ class Gudang:
         if index != -1:
             return self.items[index]
         return None
+
+    def DisplayItemDetails (self, id):
+        item = self.SeacrhItemById(id)
+        if item:
+            print("ID : {item.id}, Name : {item.name}, Quantity : {item.quantity}, Price : {item.price}")
+        else:
+            print("Item Not Found")
     
 # <---------------------- End Method Tambahan ---------------------->
 
@@ -157,8 +164,8 @@ listBarang.sortById()
 # listBarang.addItem("p101", "Item101", 100, 20000)
 # listBarang.removeItemById("p101")
 # print(listBarang.SeacrhItemById("p067"))
-
 # barang = listBarang.SeacrhItemById("p067")
 # print(barang.to_list())
+# listBarang.displayItemDetails("p067")
 
 # <---------------------- End Main program ---------------------->
