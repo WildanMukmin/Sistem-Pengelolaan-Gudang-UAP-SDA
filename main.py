@@ -208,8 +208,8 @@ listBarang = Gudang()
 #     print(i)
 # listBarang.removeItemById("p101")
 # print(listBarang.SeacrhItemById("p067"))
-
 # barang = listBarang.SeacrhItemById("p067")
 # print(barang.to_list())
+# listBarang.displayItemDetails("p067")
 
 # <---------------------- End Main program ---------------------->
