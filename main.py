@@ -147,11 +147,11 @@ class Gudang:
         if index != -1:
             return self.items[index]
         return None
-
     
     def displayAllproduct(self):
         for item in self.items:
             print(item.to_list())
+
     
     def getAllproduct(self):
         arr = []
@@ -159,36 +159,36 @@ class Gudang:
             arr.append(item.to_list())
         return arr
     
-def getNameItem(self, id):
+    def getNameItem(self, id):
+            item = self.SeacrhItemById(id)
+            return item.name if item else None
+        
+    def getPriceItem(self, id):
         item = self.SeacrhItemById(id)
-        return item.name if item else None
-    
-def getPriceItem(self, id):
-    item = self.SeacrhItemById(id)
-    return item.price if item else None
+        return item.price if item else None
 
-def getQuantityItem(self, id):
-    item = self.SeacrhItemById(id)
-    return item.quantity if item else None
+    def getQuantityItem(self, id):
+        item = self.SeacrhItemById(id)
+        return item.quantity if item else None
 
-def setNameItem(self, id, name):
-    item = self.SeacrhItemById(id)
-    if item:
-        item.name = name
-        self.updateFileCsv()
+    def setNameItem(self, id, name):
+        item = self.SeacrhItemById(id)
+        if item:
+            item.name = name
+            self.updateFileCsv()
 
-def setPriceItem(self, id, price):
-    item = self.SeacrhItemById(id)
-    if item:
-        item.price = price
-        self.updateFileCsv()
+    def setPriceItem(self, id, price):
+        item = self.SeacrhItemById(id)
+        if item:
+            item.price = price
+            self.updateFileCsv()
 
-def setQuantityItem(self, id, quantity):
-    item = self.SeacrhItemById(id)
-    if item:
-        item.quantity = quantity
-        self.updateFileCsv()
-    
+    def setQuantityItem(self, id, quantity):
+        item = self.SeacrhItemById(id)
+        if item:
+            item.quantity = quantity
+            self.updateFileCsv()
+        
 # <---------------------- End Method Tambahan ---------------------->
 
 # <---------------------- End Class Item dan Gudang ---------------------->
