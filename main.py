@@ -90,6 +90,12 @@ class Item:
     def to_list(self):
         return [self.id, self.name, self.quantity, self.price]
 
+    # def __str__(self):
+    #     return f"Item(id={self.id}, name={self.name}, quantity={self.quantity}, price={self.price})"
+
+
+
+
 class Gudang:
 # <---------------------- Constructor ---------------------->
     
@@ -141,6 +147,47 @@ class Gudang:
         if index != -1:
             return self.items[index]
         return None
+
+    
+    def displayAllproduct(self):
+        for item in self.items:
+            print(item.to_list())
+    
+    def getAllproduct(self):
+        arr = []
+        for item in self.items:
+            arr.append(item.to_list())
+        return arr
+    
+def getNameItem(self, id):
+        item = self.SeacrhItemById(id)
+        return item.name if item else None
+    
+def getPriceItem(self, id):
+    item = self.SeacrhItemById(id)
+    return item.price if item else None
+
+def getQuantityItem(self, id):
+    item = self.SeacrhItemById(id)
+    return item.quantity if item else None
+
+def setNameItem(self, id, name):
+    item = self.SeacrhItemById(id)
+    if item:
+        item.name = name
+        self.updateFileCsv()
+
+def setPriceItem(self, id, price):
+    item = self.SeacrhItemById(id)
+    if item:
+        item.price = price
+        self.updateFileCsv()
+
+def setQuantityItem(self, id, quantity):
+    item = self.SeacrhItemById(id)
+    if item:
+        item.quantity = quantity
+        self.updateFileCsv()
     
 # <---------------------- End Method Tambahan ---------------------->
 
@@ -153,8 +200,12 @@ class Gudang:
 listBarang = Gudang()
 
 
-listBarang.sortById()
+# listBarang.sortById()
+# listBarang.sortByPrice()
 # listBarang.addItem("p101", "Item101", 100, 20000)
+# arr = listBarang.getAllproduct()
+# for i in arr:
+#     print(i)
 # listBarang.removeItemById("p101")
 # print(listBarang.SeacrhItemById("p067"))
 
