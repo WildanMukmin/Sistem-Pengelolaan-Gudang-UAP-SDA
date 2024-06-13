@@ -223,12 +223,15 @@ class GudangApp(tk.Tk):
     def display_all(self):
         self.clear_content_frame()
         self.content_text = tk.Text(self.content_frame)
-        self.content_text.pack(fill=tk.BOTH, expand=True)
+        self.content_text.pack(side=tk.TOP ,fill=tk.BOTH, expand=True)
         self.content_text.delete(1.0, tk.END)
         products = self.gudang.getAllproduct()
         for product in products:
-            self.content_text.insert(tk.END, f"{product}\n")
-
+            self.content_text.insert(tk.END, f" ID: {product[0]} \t\t  Nama: {product[1]} \t\t  Jumlah: {product[2]} \t\t  Harga: {product[3]} \t\n")
+            self.content_text.insert(tk.END, f"-----------------------------------------------------------------\n")
+            
+            
+        
     def add_item(self):
         self.clear_content_frame()
         label_name_entry = tk.Label(self.content_frame, text="Name")
@@ -263,7 +266,7 @@ class GudangApp(tk.Tk):
             else:
                 messagebox.showerror("Input Error", "Please enter valid name, quantity, and price.")
         
-        add_button = tk.Button(self.content_frame, text="Add", command=add_item_to_gudang)
+        add_button = tk.Button(self.content_frame, text="ADD", command=add_item_to_gudang)
         add_button.pack(padx=10, pady=10)
 
     def remove_item(self):
@@ -284,7 +287,7 @@ class GudangApp(tk.Tk):
             else:
                 messagebox.showerror("Error", "Nama tidak ditemukan")
         
-        delete_button = tk.Button(self.content_frame, text="Delete", command=remove_item_in_gudang)
+        delete_button = tk.Button(self.content_frame, text="DELETE", command=remove_item_in_gudang)
         delete_button.pack(padx=10, pady=10)
 
     def search_item(self):
@@ -301,10 +304,10 @@ class GudangApp(tk.Tk):
             items = self.gudang.searchByName(name)
             
             if items:
-                messagebox.showinfo("Sukses", "Data ditemukan")
                 self.content_text = tk.Text(self.content_frame)
                 self.content_text.pack(fill=tk.BOTH, expand=True)
                 self.content_text.delete(1.0, tk.END)
+                messagebox.showinfo("Sukses", "Data ditemukan")
                 
                 for item in items:
                     self.content_text.insert(tk.END, f"ID: {item.id}\n")
@@ -315,7 +318,7 @@ class GudangApp(tk.Tk):
             else:
                 messagebox.showerror("Error", "Nama tidak ditemukan")
         
-        search_button = tk.Button(self.content_frame, text="Cari", command=display_item_in_gudang)
+        search_button = tk.Button(self.content_frame, text="FIND", command=display_item_in_gudang)
         search_button.pack(padx=10, pady=10)
         
     def sort_by_price(self):
