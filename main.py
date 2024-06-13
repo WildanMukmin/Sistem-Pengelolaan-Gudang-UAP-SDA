@@ -1,5 +1,8 @@
 import csv
-
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+from tkinter import simpledialog
 # <---------------------- Akses File ---------------------->
 
 def readFileCsv(fileName):
@@ -11,9 +14,6 @@ def readFileCsv(fileName):
             if len(row) == 4:
                 items.append(Item(row[0], row[1], row[2], row[3]))
     return items
-
-# <---------------------- End Akses File ---------------------->
-
 
 # <---------------------- Algoritma Sorting ---------------------->
 
@@ -51,9 +51,6 @@ def merge(left, right, parameter):
     
     return result
 
-# <---------------------- End Algoritma Sorting ---------------------->
-
-
 # <---------------------- Algoritma Search ---------------------->
 
 def binarySearch(arr, target_id):
@@ -75,9 +72,6 @@ def binarySearch(arr, target_id):
 
     return -1
 
-# <---------------------- Algoritma Search ---------------------->
-
-
 # <---------------------- Class Item dan Gudang ---------------------->
 
 class Item:
@@ -97,61 +91,15 @@ class Item:
 
 
 class Gudang:
-# <---------------------- Constructor ---------------------->
+    next_id = 1
+    # <---------------------- Constructor ---------------------->
     
     def __init__(self):
         self.items = readFileCsv("items.csv")
+        if self.items:
+            Gudang.next_id = len(self.items) + 1
         
-# <---------------------- End Constructor ---------------------->
-        
-# <---------------------- Method CRUD ---------------------->
-
-    def addItem(self, id, name, quantity, price):
-        self.items.append(Item(id, name, quantity, price))
-        self.updateFileCsv()
-        
-    def removeItemByName(self, name):
-        self.items = [item for item in self.items if item.name != name]
-        self.updateFileCsv()
-    
-    def removeItemById(self, id):
-        self.items = [item for item in self.items if item.id != id]
-        self.updateFileCsv()
-    
-    def updateFileCsv(self):
-        with open("items.csv", "w", newline='', encoding="utf-8") as file:
-            writer = csv.writer(file)
-            writer.writerow(['id', 'name', 'quantity', 'price'])  # Add header row
-            for item in self.items:
-                writer.writerow(item.to_list())
-
-# <---------------------- End Method CRUD ---------------------->
-
-# <---------------------- Method Tambahan ---------------------->
-
-    def sortByPrice(self):
-        self.items = mergeSort(self.items, 'price')
-        self.updateFileCsv()
-
-    def sortByQuantity(self):
-        self.items = mergeSort(self.items, 'quantity')
-        self.updateFileCsv()
-
-    def sortById(self):
-        self.items = mergeSort(self.items, 'id')
-        self.updateFileCsv()
-    
-    def SeacrhItemById(self, id):
-        self.sortById()
-        index = binarySearch(self.items, id)
-        if index != -1:
-            return self.items[index]
-        return None
-    
-    def displayAllproduct(self):
-        for item in self.items:
-            print(item.to_list())
-
+    # <---------------------- Setter Getter ---------------------->
     
     def getAllproduct(self):
         arr = []
@@ -188,28 +136,61 @@ class Gudang:
         if item:
             item.quantity = quantity
             self.updateFileCsv()
-        
-# <---------------------- End Method Tambahan ---------------------->
+   
+    # <---------------------- Method CRUD ---------------------->
 
-# <---------------------- End Class Item dan Gudang ---------------------->
+    def addItem(self, name, quantity, price):
+        item_id = Gudang.next_id
+        Gudang.next_id += 1
+        self.items.append(Item(str(item_id), name, quantity, price))
+        self.updateFileCsv()
+        
+    def removeItemByName(self, name):
+        self.items = [item for item in self.items if item.name != name]
+        self.updateFileCsv()
+    
+    def removeItemById(self, id):
+        self.items = [item for item in self.items if item.id != id]
+        self.updateFileCsv()
+    
+    def updateFileCsv(self):
+        with open("items.csv", "w", newline='', encoding="utf-8") as file:
+            writer = csv.writer(file)
+            writer.writerow(['id', 'name', 'quantity', 'price'])  # Add header row
+            for item in self.items:
+                writer.writerow(item.to_list())
+
+    # <---------------------- Method Tambahan ---------------------->
+
+    def sortByPrice(self):
+        self.items = mergeSort(self.items, 'price')
+        self.updateFileCsv()
+
+    def sortByQuantity(self):
+        self.items = mergeSort(self.items, 'quantity')
+        self.updateFileCsv()
+
+    def sortById(self):
+        self.items = mergeSort(self.items, 'id')
+        self.updateFileCsv()
+    
+    def SeacrhItemById(self, id):
+        self.sortById()
+        index = binarySearch(self.items, id)
+        if index != -1:
+            return self.items[index]
+        return None
+    
+    def displayAllproduct(self):
+        for item in self.items:
+            print(item.to_list())
+    
+
 
 
 # <---------------------- Main program ---------------------->
 
 # Testing the Gudang class
 listBarang = Gudang()
-
-
-# listBarang.sortById()
-# listBarang.sortByPrice()
-# listBarang.addItem("p101", "Item101", 100, 20000)
-# arr = listBarang.getAllproduct()
-# for i in arr:
-#     print(i)
-# listBarang.removeItemById("p101")
-# print(listBarang.SeacrhItemById("p067"))
-# barang = listBarang.SeacrhItemById("p067")
-# print(barang.to_list())
-# listBarang.displayItemDetails("p067")
 
 # <---------------------- End Main program ---------------------->
