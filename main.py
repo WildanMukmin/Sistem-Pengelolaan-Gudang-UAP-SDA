@@ -288,18 +288,36 @@ class GudangApp(tk.Tk):
         delete_button.pack(padx=10, pady=10)
 
     def search_item(self):
-        id = simpledialog.askstring("Input", "Enter item ID to search:")
-        if id:
-            item = self.gudang.SearchItemById(id)
-            self.clear_content_frame()
-            self.content_text = tk.Text(self.content_frame)
-            self.content_text.pack(fill=tk.BOTH, expand=True)
-            self.content_text.delete(1.0, tk.END)
-            if item:
-                self.content_text.insert(tk.END, f"Item found: {item.to_list()}\n")
-            else:
-                self.content_text.insert(tk.END, "Item not found.\n")
+        self.clear_content_frame()
+        
+        label_name = tk.Label(self.content_frame, text="Masukan Nama Yang Ingin Anda Cari!")
+        label_name.pack(padx=10, pady=10)
+        
+        name_entry = tk.Entry(self.content_frame)
+        name_entry.pack(padx=10, pady=10)
 
+        def display_item_in_gudang():
+            name = name_entry.get().strip()  # Get the name when the button is clicked
+            items = self.gudang.searchByName(name)
+            
+            if items:
+                messagebox.showinfo("Sukses", "Data ditemukan")
+                self.content_text = tk.Text(self.content_frame)
+                self.content_text.pack(fill=tk.BOTH, expand=True)
+                self.content_text.delete(1.0, tk.END)
+                
+                for item in items:
+                    self.content_text.insert(tk.END, f"ID: {item.id}\n")
+                    self.content_text.insert(tk.END, f"Nama: {item.name}\n")
+                    self.content_text.insert(tk.END, f"Jumlah: {item.quantity}\n")
+                    self.content_text.insert(tk.END, f"Harga: {item.price}\n")
+                    self.content_text.insert(tk.END, "\n")
+            else:
+                messagebox.showerror("Error", "Nama tidak ditemukan")
+        
+        search_button = tk.Button(self.content_frame, text="Cari", command=display_item_in_gudang)
+        search_button.pack(padx=10, pady=10)
+        
     def sort_by_price(self):
         self.gudang.sortByPrice()
         self.display_all()
