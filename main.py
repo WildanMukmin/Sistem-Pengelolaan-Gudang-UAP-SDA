@@ -203,6 +203,9 @@ class GudangApp(tk.Tk):
         self.btn_search_item = tk.Button(self.nav_frame, text="Search Item", command=self.search_item)
         self.btn_search_item.pack(side=tk.LEFT, padx=5, pady=5)
         
+        self.btn_update_item = tk.Button(self.nav_frame, text="Update Item", command=self.update_item)
+        self.btn_update_item.pack(side=tk.LEFT, padx=5, pady=5)
+        
         self.btn_sort_price = tk.Button(self.nav_frame, text="Sort by Price", command=self.sort_by_price)
         self.btn_sort_price.pack(side=tk.RIGHT, padx=5, pady=5)
         
@@ -227,8 +230,8 @@ class GudangApp(tk.Tk):
         self.content_text.delete(1.0, tk.END)
         products = self.gudang.getAllproduct()
         for product in products:
-            self.content_text.insert(tk.END, f" ID: {product[0]} \t\t  Nama: {product[1]} \t\t  Jumlah: {product[2]} \t\t  Harga: {product[3]} \t\n")
-            self.content_text.insert(tk.END, f"-----------------------------------------------------------------\n")
+            self.content_text.insert(tk.END, f" ID: {product[0]} \t\t\t  Nama: {product[1]} \t\t\t  Jumlah: {product[2]} \t\t\t  Harga: {product[3]} \t\n")
+            self.content_text.insert(tk.END, f"---------------------------------------------------------------------------------------------------\n")
             
             
         
@@ -321,6 +324,9 @@ class GudangApp(tk.Tk):
         search_button = tk.Button(self.content_frame, text="FIND", command=display_item_in_gudang)
         search_button.pack(padx=10, pady=10)
         
+    def update_item(self):
+        pass    
+    
     def sort_by_price(self):
         self.gudang.sortByPrice()
         self.display_all()
