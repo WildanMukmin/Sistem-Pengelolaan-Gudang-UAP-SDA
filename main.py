@@ -325,8 +325,60 @@ class GudangApp(tk.Tk):
         search_button.pack(padx=10, pady=10)
         
     def update_item(self):
-        pass    
-    
+        self.clear_content_frame()
+
+        # Entry for item ID
+        label_id = tk.Label(self.content_frame, text="Masukkan ID yang ingin diperbarui:")
+        label_id.pack(padx=10, pady=10)
+
+        id_entry = tk.Entry(self.content_frame)
+        id_entry.pack(padx=10, pady=10)
+
+        # Entry for new name
+        label_new_name = tk.Label(self.content_frame, text="Nama baru (kosongkan jika tidak ingin mengubah):")
+        label_new_name.pack(padx=10, pady=10)
+
+        new_name_entry = tk.Entry(self.content_frame)
+        new_name_entry.pack(padx=10, pady=10)
+
+        # Entry for new quantity
+        label_new_quantity = tk.Label(self.content_frame, text="Jumlah baru (kosongkan jika tidak ingin mengubah):")
+        label_new_quantity.pack(padx=10, pady=10)
+
+        new_quantity_entry = tk.Entry(self.content_frame)
+        new_quantity_entry.pack(padx=10, pady=10)
+
+        # Entry for new price
+        label_new_price = tk.Label(self.content_frame, text="Harga baru (kosongkan jika tidak ingin mengubah):")
+        label_new_price.pack(padx=10, pady=10)
+
+        new_price_entry = tk.Entry(self.content_frame)
+        new_price_entry.pack(padx=10, pady=10)
+
+        def update_item_in_gudang():
+            item_id = id_entry.get().strip()
+            new_name = new_name_entry.get().strip()
+            new_quantity_str = new_quantity_entry.get().strip()
+            new_price_str = new_price_entry.get().strip()
+
+            item = self.gudang.SearchItemById(item_id)
+            if item:
+                if new_name:
+                    self.gudang.setNameItem(item_id, new_name)
+                if new_quantity_str.isdigit():
+                    new_quantity = int(new_quantity_str)
+                    self.gudang.setQuantityItem(item_id, new_quantity)
+                if new_price_str.isdigit():
+                    new_price = int(new_price_str)
+                    self.gudang.setPriceItem(item_id, new_price)
+                messagebox.showinfo("Sukses", "Data berhasil diperbarui")
+                self.display_all()
+            else:
+                messagebox.showerror("Error", "ID tidak ditemukan")
+
+        update_button = tk.Button(self.content_frame, text="UPDATE", command=update_item_in_gudang)
+        update_button.pack(padx=10, pady=10)
+
     def sort_by_price(self):
         self.gudang.sortByPrice()
         self.display_all()
