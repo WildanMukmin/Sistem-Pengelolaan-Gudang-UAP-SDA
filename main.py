@@ -1,7 +1,7 @@
 import csv
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
-from tkinter import simpledialog
 
 # <---------------------- Akses File ---------------------->
 
@@ -183,41 +183,41 @@ class GudangApp(tk.Tk):
 
     def create_widgets(self):
         # <----------------- GENERATE NAV FRAME ----------------->
-        self.nav_frame = tk.Frame(self, height=40, bg="red")
+        self.nav_frame = tk.Frame(self, height=40, bg="#175227")
         self.nav_frame.pack(side=tk.TOP, fill=tk.X)
 
         # <----------------- GENERATE CONTENT FRAME ----------------->
-        self.content_frame = tk.Frame(self)
+        self.content_frame = tk.Frame(self, bg="#7d807e")
         self.content_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         
         # <----------------- GENERATE NAV CONTENT ----------------->
-        self.btn_display_all = tk.Button(self.nav_frame, text="Display All", command=self.display_all)
+        style_button_nav = ttk.Style()
+        style_button_nav.configure('TButton', font=('Helvetica', 8), padding=6, relief='flat', background='#000000', foreground='black')
+
+        self.btn_display_all = ttk.Button(self.nav_frame, text="Display All", command=self.display_all, style='TButton')
         self.btn_display_all.pack(side=tk.LEFT, padx=5, pady=5)
         
-        self.btn_add_item = tk.Button(self.nav_frame, text="Add Item", command=self.add_item)
+        self.btn_add_item = ttk.Button(self.nav_frame, text="Add Item", command=self.add_item, style='TButton')
         self.btn_add_item.pack(side=tk.LEFT, padx=5, pady=5)
         
-        self.btn_remove_item = tk.Button(self.nav_frame, text="Remove Item", command=self.remove_item)
+        self.btn_remove_item = ttk.Button(self.nav_frame, text="Remove Item", command=self.remove_item, style='TButton')
         self.btn_remove_item.pack(side=tk.LEFT, padx=5, pady=5)
         
-        self.btn_search_item = tk.Button(self.nav_frame, text="Search Item", command=self.search_item)
+        self.btn_search_item = ttk.Button(self.nav_frame, text="Search Item", command=self.search_item, style='TButton')
         self.btn_search_item.pack(side=tk.LEFT, padx=5, pady=5)
         
-        self.btn_update_item = tk.Button(self.nav_frame, text="Update Item", command=self.update_item)
+        self.btn_update_item = ttk.Button(self.nav_frame, text="Update Item", command=self.update_item, style='TButton')
         self.btn_update_item.pack(side=tk.LEFT, padx=5, pady=5)
         
-        self.btn_sort_price = tk.Button(self.nav_frame, text="Sort by Price", command=self.sort_by_price)
+        self.btn_sort_price = ttk.Button(self.nav_frame, text="Sort by Price", command=self.sort_by_price, style='TButton')
         self.btn_sort_price.pack(side=tk.RIGHT, padx=5, pady=5)
         
-        self.btn_sort_quantity = tk.Button(self.nav_frame, text="Sort by Quantity", command=self.sort_by_quantity)
+        self.btn_sort_quantity = ttk.Button(self.nav_frame, text="Sort by Quantity", command=self.sort_by_quantity, style='TButton')
         self.btn_sort_quantity.pack(side=tk.RIGHT, padx=5, pady=5)
         
-        self.btn_sort_id = tk.Button(self.nav_frame, text="Sort by ID", command=self.sort_by_id)
+        self.btn_sort_id = ttk.Button(self.nav_frame, text="Sort by ID", command=self.sort_by_id, style='TButton')
         self.btn_sort_id.pack(side=tk.RIGHT, padx=5, pady=5)
         
-        # <----------------- GENERATE CONTENT ----------------->
-        self.content_text = tk.Text(self.content_frame)
-        self.content_text.pack(fill=tk.BOTH, expand=True)
         
     def clear_content_frame(self):
         for widget in self.content_frame.winfo_children():
@@ -225,7 +225,7 @@ class GudangApp(tk.Tk):
 
     def display_all(self):
         self.clear_content_frame()
-        self.content_text = tk.Text(self.content_frame)
+        self.content_text = tk.Text(self.content_frame, background="#7d807e")
         self.content_text.pack(side=tk.TOP ,fill=tk.BOTH, expand=True)
         self.content_text.delete(1.0, tk.END)
         products = self.gudang.getAllproduct()
