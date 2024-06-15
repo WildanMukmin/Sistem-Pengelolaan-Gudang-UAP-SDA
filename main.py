@@ -178,6 +178,7 @@ class GudangApp(tk.Tk):
         self.gudang = gudang
         self.title("Gudang Inventory Management")
         self.geometry("800x600")
+        self.resizable(False, False)
         
         self.create_widgets()
 
@@ -225,15 +226,25 @@ class GudangApp(tk.Tk):
 
     def display_all(self):
         self.clear_content_frame()
-        self.content_text = tk.Text(self.content_frame, background="#7d807e")
-        self.content_text.pack(side=tk.TOP ,fill=tk.BOTH, expand=True)
-        self.content_text.delete(1.0, tk.END)
+        
+        self.canvas_content_frame = tk.Canvas(self.content_frame, bg="#7d807e")
+        self.canvas_content_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=40, pady=5)
+        
+        self.canvas_content_frame_scrolbar = ttk.Scrollbar(self.content_frame, orient=tk.VERTICAL, command=self.canvas_content_frame.yview)
+        self.canvas_content_frame_scrolbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        self.canvas_content_frame.configure(yscrollcommand=self.canvas_content_frame_scrolbar.set)
+        self.canvas_content_frame.bind("<Configure>", lambda e : self.canvas_content_frame.configure(scrollregion=self.canvas_content_frame.bbox("all")))
+        
+        self.box_detail_item = tk.Frame(self.canvas_content_frame, height=30, bg="#7d807e")
+        
+        self.canvas_content_frame.create_window((0,0), window=self.box_detail_item, anchor=tk.NW)
+        
         products = self.gudang.getAllproduct()
+        
         for product in products:
-            self.content_text.insert(tk.END, f" ID: {product[0]} \t\t\t  Nama: {product[1]} \t\t\t  Jumlah: {product[2]} \t\t\t  Harga: {product[3]} \t\n")
-            self.content_text.insert(tk.END, f"---------------------------------------------------------------------------------------------------\n")
-            
-            
+            self.box_info = ttk.Label(self.box_detail_item, text=f"Id Barang : {product[0]},\t\t Nama Barang : {product[1]},\t\t Jumlah Barang : {product[2]},\t\t Harga Barang : {product[3]}").pack(side=tk.TOP, padx=10, pady=5, fill="x", expand=True)
+        
         
     def add_item(self):
         self.clear_content_frame()
@@ -380,14 +391,17 @@ class GudangApp(tk.Tk):
         update_button.pack(padx=10, pady=10)
 
     def sort_by_price(self):
+        self.clear_content_frame()
         self.gudang.sortByPrice()
         self.display_all()
         
     def sort_by_quantity(self):
+        self.clear_content_frame()
         self.gudang.sortByQuantity()
         self.display_all()
         
     def sort_by_id(self):
+        self.clear_content_frame()
         self.gudang.sortById()
         self.display_all()
 
