@@ -172,8 +172,8 @@ class GudangApp(tk.Tk):
         
         self.gudang = gudang
         self.title("Gudang Inventory Management")
-        self.geometry("800x600")
-        self.resizable(False, False)
+        self.geometry("1000x600")
+        # self.resizable(False, False)
         
         self.create_widgets()
 
@@ -205,6 +205,8 @@ class GudangApp(tk.Tk):
         self.btn_update_item = ttk.Button(self.nav_frame, text="Update Item", command=self.update_item, style='TButton')
         self.btn_update_item.pack(side=tk.LEFT, padx=5, pady=5)
         
+        self.display_all() # Jika dibutuhkan bisa di generate langsung isi dari gudang
+        
         
     def clear_content_frame(self):
         for widget in self.content_frame.winfo_children():
@@ -227,7 +229,7 @@ class GudangApp(tk.Tk):
         self.btn_sort_id.pack(side=tk.RIGHT, padx=5, pady=5)      
         
         self.canvas_content_frame = tk.Canvas(self.content_frame, bg="#7d807e")
-        self.canvas_content_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=40, pady=5)
+        self.canvas_content_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
         
         self.canvas_content_frame_scrolbar = ttk.Scrollbar(self.content_frame, orient=tk.VERTICAL, command=self.canvas_content_frame.yview)
         self.canvas_content_frame_scrolbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -240,30 +242,47 @@ class GudangApp(tk.Tk):
         self.canvas_content_frame.create_window((0,0), window=self.box_detail_item, anchor=tk.NW)
         
         products = self.gudang.getAllproduct()
-        
+        style_list_items = ttk.Style()
+        style_list_items.configure('list_items.TLabel', 
+                        font=('Helvetica', 10, 'bold'), 
+                        background='#f0f0f0', 
+                        foreground='#333333',
+                        padding=10)
         for product in products:
-            self.box_info = ttk.Label(self.box_detail_item, text=f"Id Barang : {product[0]},\t\t Nama Barang : {product[1]},\t\t Jumlah Barang : {product[2]},\t\t Harga Barang : {product[3]}").pack(side=tk.TOP, padx=10, pady=5, fill="x", expand=True)
-        
+            self.box_info = ttk.Label(self.box_detail_item,style="list_items.TLabel" ,text=f"    Id Barang : {product[0]},\t\t Nama Barang : {product[1]},\t\t Jumlah Barang : {product[2]},\t\t Harga Barang : {product[3]}    ").pack(side=tk.TOP, padx=50, pady=6, fill=tk.BOTH)     
         
     def add_item(self):
         self.clear_content_frame()
-        label_name_entry = tk.Label(self.content_frame, text="Name")
-        label_name_entry.pack(padx=10, pady=10)
         
-        name_entry = tk.Entry(self.content_frame)
-        name_entry.pack(padx=10, pady=10)
+        # <---------------- FORM NAME ---------------->
+        frame_name = tk.Frame(self.content_frame)
+        frame_name.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
         
-        label_quantity_entry = tk.Label(self.content_frame, text="Quantity")
-        label_quantity_entry.pack(padx=10, pady=10)
+        label_name_entry = tk.Label(frame_name, text="Name")
+        label_name_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
         
-        quantity_entry = tk.Entry(self.content_frame)
-        quantity_entry.pack(padx=10, pady=10)
+        name_entry = tk.Entry(frame_name)
+        name_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
         
-        label_price_entry = tk.Label(self.content_frame, text="Price")
-        label_price_entry.pack(padx=10, pady=10)
+        # <---------------- FORM QUANTITY ---------------->
+        frame_quantity = tk.Frame(self.content_frame)
+        frame_quantity.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
         
-        price_entry = tk.Entry(self.content_frame)
-        price_entry.pack(padx=10, pady=10)
+        label_quantity_entry = tk.Label(frame_quantity, text="Quantity")
+        label_quantity_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
+        
+        quantity_entry = tk.Entry(frame_quantity)
+        quantity_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
+        
+        # <---------------- FORM PRICE ---------------->
+        frame_price = tk.Frame(self.content_frame)
+        frame_price.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
+        
+        label_price_entry = tk.Label(frame_price, text="Price")
+        label_price_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
+        
+        price_entry = tk.Entry(frame_price)
+        price_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
         
         def add_item_to_gudang():
             name = name_entry.get()
@@ -279,8 +298,11 @@ class GudangApp(tk.Tk):
             else:
                 messagebox.showerror("Input Error", "Please enter valid name, quantity, and price.")
         
-        add_button = tk.Button(self.content_frame, text="ADD", command=add_item_to_gudang)
-        add_button.pack(padx=10, pady=10)
+        # <---------------- BUTTON ADD ---------------->
+        style_button_add = ttk.Style()
+        style_button_add.configure('add_button.TButton', font=('Helvetica', 6), relief='flat', background='#000000', foreground='black')
+        add_button = ttk.Button(self.content_frame, text="ADD", command=add_item_to_gudang, style="add_button.TButton")
+        add_button.pack(padx=100, pady=20, fill=tk.X)
 
     def remove_item(self):
         self.clear_content_frame()
