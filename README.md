@@ -15,6 +15,7 @@ Repositori ini berisi aplikasi Python untuk mengelola inventaris di gudang mengg
 - **Hapus Barang**: Menghapus barang dari inventaris berdasarkan nama atau ID.
 - **Perbarui Barang**: Memperbarui nama, jumlah, atau harga barang.
 - **Cari Barang**: Mencari barang berdasarkan nama.
+- **Update Barang**: Memperbarui item yang ada di gudang.
 - **Tampilkan Semua Barang**: Menampilkan semua barang di inventaris.
 - **Urutkan Barang**: Mengurutkan barang berdasarkan ID, jumlah, atau harga.
 
@@ -85,7 +86,7 @@ Fungsi untuk mencari barang menggunakan binary search:
 
 ## Komponen GUI
 
-- **Navigasi Frame**: Berisi tombol untuk berbagai tindakan (misalnya, Tampilkan Semua, Tambah Barang, Hapus Barang, Cari Barang, Perbarui Barang, Urutkan berdasarkan Harga, Urutkan berdasarkan Jumlah, Urutkan berdasarkan ID).
+- **Navigasi Frame**: Berisi tombol untuk berbagai tindakan (misalnya, Tampilkan Semua(Urutkan berdasarkan Harga, Urutkan berdasarkan Jumlah, Urutkan berdasarkan ID), Tambah Barang, Hapus Barang, Cari Barang, Perbarui Barang).
 - **Konten Frame**: Menampilkan konten berdasarkan tindakan yang dipilih.
 
 ### Contoh Tindakan GUI
@@ -94,6 +95,7 @@ Fungsi untuk mencari barang menggunakan binary search:
 - **Tambah Barang**: Meminta pengguna memasukkan detail barang dan menambahkan barang ke inventaris.
 - **Hapus Barang**: Meminta pengguna memasukkan nama barang yang akan dihapus.
 - **Cari Barang**: Meminta pengguna memasukkan nama barang yang ingin dicari.
+- **Update Barang**: Meminta pengguna memasukkan id, nama, jumlah, harga untuk di update.
 - **Urutkan berdasarkan Harga**: Mengurutkan barang berdasarkan harga.
 - **Urutkan berdasarkan Jumlah**: Mengurutkan barang berdasarkan jumlah.
 - **Urutkan berdasarkan ID**: Mengurutkan barang berdasarkan ID.
@@ -105,11 +107,3 @@ Fungsi untuk mencari barang menggunakan binary search:
 3. Lakukan perubahan Anda dan commit (`git commit -m 'Tambahkan beberapa fitur'`).
 4. Push ke branch (`git push origin fitur-baru`).
 5. Buat Pull Request baru.
-
-## Lisensi
-
-Proyek ini dilisensikan di bawah Lisensi MIT - lihat file [LICENSE](LICENSE) untuk detail lebih lanjut.
-
----
-
-Silakan sesuaikan file `README.md` ini lebih lanjut sesuai kebutuhan spesifik Anda atau tambahkan lebih banyak bagian jika diperlukan.

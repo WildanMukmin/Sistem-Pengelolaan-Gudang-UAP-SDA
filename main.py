@@ -167,6 +167,7 @@ class Gudang:
             print(item.to_list())
 
 class GudangApp(tk.Tk):
+    
     def __init__(self, gudang):
         super().__init__()
         
@@ -175,20 +176,45 @@ class GudangApp(tk.Tk):
         self.geometry("1000x600")
         # self.resizable(False, False)
         
+        # <---------------------- ALL STYLE CONFIGURE ---------------------->
+        self.general_style = ttk.Style(self)
+        self.form_style = ttk.Style(self)
+        self.style_list_items = ttk.Style(self)
+        
+        # <---------------------- STYLE FRAME ---------------------->
+        self.general_style.configure("general_style.TFrame", background="lightblue")
+        self.form_style.configure("form_style.TFrame", background="#267c91")
+        
+        # <---------------------- STYLE LABEL ---------------------->
+        self.general_style.configure("general_style.TLabel", background="lightblue", font=("Arial", 12))
+        self.form_style.configure("form_style.TLabel", background="#267c91", font=("Arial", 12))
+        
+        # <---------------------- STYLE ENTRY ---------------------->
+        self.general_style.configure("general_style.TEntry", font=("Arial", 12))
+        self.form_style.configure("form_style.TEntry", font=("Arial", 12))
+        
+        # <---------------------- STYLE BUTTON ---------------------->
+        self.general_style.configure('general_style.TButton', font=('Helvetica', 6), relief='flat', background='#000000', foreground='black')
+        self.form_style.configure('form_style.TButton', font=('Helvetica', 6), relief='flat', background='#000000', foreground='black')
+        
+        # <---------------------- STYLE LIST ITEM ---------------------->
+        self.style_list_items.configure('list_items.TLabel', font=('Helvetica', 10, 'bold'), background='#f0f0f0', foreground='#333333',padding=10)
+        
         self.create_widgets()
 
     def create_widgets(self):
+        style_button_nav = ttk.Style()
+        style_button_nav.configure('TButton', font=('Helvetica', 8), padding=6, relief='flat', background='#000000', foreground='black')
+        
         # <----------------- GENERATE NAV FRAME ----------------->
-        self.nav_frame = tk.Frame(self, height=40, bg="#175227")
+        self.nav_frame = ttk.Frame(self, height=40, style="general_style.TFrame")
         self.nav_frame.pack(side=tk.TOP, fill=tk.X)
 
         # <----------------- GENERATE CONTENT FRAME ----------------->
-        self.content_frame = tk.Frame(self, bg="#7d807e")
+        self.content_frame = ttk.Frame(self, style="general_style.TFrame")
         self.content_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         
         # <----------------- GENERATE NAV CONTENT ----------------->
-        style_button_nav = ttk.Style()
-        style_button_nav.configure('TButton', font=('Helvetica', 8), padding=6, relief='flat', background='#000000', foreground='black')
 
         self.btn_display_all = ttk.Button(self.nav_frame, text="Display All", command=self.display_all, style='TButton')
         self.btn_display_all.pack(side=tk.LEFT, padx=5, pady=5)
@@ -207,7 +233,6 @@ class GudangApp(tk.Tk):
         
         self.display_all() # Jika dibutuhkan bisa di generate langsung isi dari gudang
         
-        
     def clear_content_frame(self):
         for widget in self.content_frame.winfo_children():
             widget.destroy()
@@ -216,7 +241,7 @@ class GudangApp(tk.Tk):
         self.clear_content_frame()
         
         # <----------------- GENERATE NAV SORT ----------------->
-        self.nav_frame_sort = tk.Frame(self.content_frame, height=40, bg="#175227")
+        self.nav_frame_sort = ttk.Frame(self.content_frame, height=40, style="general_style.TFrame")
         self.nav_frame_sort.pack(side=tk.BOTTOM, fill=tk.X)
         
         self.btn_sort_price = ttk.Button(self.nav_frame_sort, text="Sort by Price", command=self.sort_by_price, style='TButton')
@@ -228,7 +253,7 @@ class GudangApp(tk.Tk):
         self.btn_sort_id = ttk.Button(self.nav_frame_sort, text="Sort by ID", command=self.sort_by_id, style='TButton')
         self.btn_sort_id.pack(side=tk.RIGHT, padx=5, pady=5)      
         
-        self.canvas_content_frame = tk.Canvas(self.content_frame, bg="#7d807e")
+        self.canvas_content_frame = tk.Canvas(self.content_frame, bg="lightblue")
         self.canvas_content_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
         
         self.canvas_content_frame_scrolbar = ttk.Scrollbar(self.content_frame, orient=tk.VERTICAL, command=self.canvas_content_frame.yview)
@@ -237,17 +262,12 @@ class GudangApp(tk.Tk):
         self.canvas_content_frame.configure(yscrollcommand=self.canvas_content_frame_scrolbar.set)
         self.canvas_content_frame.bind("<Configure>", lambda e : self.canvas_content_frame.configure(scrollregion=self.canvas_content_frame.bbox("all")))
         
-        self.box_detail_item = tk.Frame(self.canvas_content_frame, height=30, bg="#7d807e")
+        self.box_detail_item = ttk.Frame(self.canvas_content_frame, height=30, style="general_style.TFrame")
         
         self.canvas_content_frame.create_window((0,0), window=self.box_detail_item, anchor=tk.NW)
         
         products = self.gudang.getAllproduct()
-        style_list_items = ttk.Style()
-        style_list_items.configure('list_items.TLabel', 
-                        font=('Helvetica', 10, 'bold'), 
-                        background='#f0f0f0', 
-                        foreground='#333333',
-                        padding=10)
+
         for product in products:
             self.box_info = ttk.Label(self.box_detail_item,style="list_items.TLabel" ,text=f"    Id Barang : {product[0]},\t\t Nama Barang : {product[1]},\t\t Jumlah Barang : {product[2]},\t\t Harga Barang : {product[3]}    ").pack(side=tk.TOP, padx=50, pady=6, fill=tk.BOTH)     
         
@@ -255,33 +275,33 @@ class GudangApp(tk.Tk):
         self.clear_content_frame()
         
         # <---------------- FORM NAME ---------------->
-        frame_name = tk.Frame(self.content_frame)
+        frame_name = ttk.Frame(self.content_frame, style="form_style.TFrame")
         frame_name.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
         
-        label_name_entry = tk.Label(frame_name, text="Name")
-        label_name_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
+        label_name = ttk.Label(frame_name, text="Name", style="form_style.TLabel")
+        label_name.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
         
-        name_entry = tk.Entry(frame_name)
+        name_entry = ttk.Entry(frame_name)
         name_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
         
         # <---------------- FORM QUANTITY ---------------->
-        frame_quantity = tk.Frame(self.content_frame)
+        frame_quantity = ttk.Frame(self.content_frame, style="form_style.TFrame")
         frame_quantity.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
         
-        label_quantity_entry = tk.Label(frame_quantity, text="Quantity")
-        label_quantity_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
+        label_quantity = ttk.Label(frame_quantity, text="Quantity", style="form_style.TLabel")
+        label_quantity.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
         
-        quantity_entry = tk.Entry(frame_quantity)
+        quantity_entry = ttk.Entry(frame_quantity)
         quantity_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
         
         # <---------------- FORM PRICE ---------------->
-        frame_price = tk.Frame(self.content_frame)
+        frame_price = ttk.Frame(self.content_frame, style="form_style.TFrame")
         frame_price.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
         
-        label_price_entry = tk.Label(frame_price, text="Price")
-        label_price_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
+        label_price = ttk.Label(frame_price, text="Price", style="form_style.TLabel")
+        label_price.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
         
-        price_entry = tk.Entry(frame_price)
+        price_entry = ttk.Entry(frame_price)
         price_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
         
         def add_item_to_gudang():
@@ -299,19 +319,22 @@ class GudangApp(tk.Tk):
                 messagebox.showerror("Input Error", "Please enter valid name, quantity, and price.")
         
         # <---------------- BUTTON ADD ---------------->
-        style_button_add = ttk.Style()
-        style_button_add.configure('add_button.TButton', font=('Helvetica', 6), relief='flat', background='#000000', foreground='black')
-        add_button = ttk.Button(self.content_frame, text="ADD", command=add_item_to_gudang, style="add_button.TButton")
+        add_button = ttk.Button(self.content_frame, text="ADD", command=add_item_to_gudang, style="form_style.TButton")
         add_button.pack(padx=100, pady=20, fill=tk.X)
 
     def remove_item(self):
         self.clear_content_frame()
+                
+        # <---------------- FORM NAME ---------------->
+        frame_name = ttk.Frame(self.content_frame, style="form_style.TFrame")
+        frame_name.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
         
-        label_name = tk.Label(self.content_frame, text="Masukan Nama Yang Ingin di Hapus!")
-        label_name.pack(padx=10, pady=10)
+        label_name = ttk.Label(frame_name, text="Masukan Nama Yang Ingin di Hapus!", style="form_style.TLabel")
+        label_name.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
         
-        name_entry = tk.Entry(self.content_frame)
-        name_entry.pack(padx=10, pady=10)
+        name_entry = ttk.Entry(frame_name)
+        name_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
+
         
         def remove_item_in_gudang():
             name = name_entry.get()  # Get the name when the button is clicked
@@ -322,76 +345,102 @@ class GudangApp(tk.Tk):
             else:
                 messagebox.showerror("Error", "Nama tidak ditemukan")
         
-        delete_button = tk.Button(self.content_frame, text="DELETE", command=remove_item_in_gudang)
-        delete_button.pack(padx=10, pady=10)
+        delete_button = ttk.Button(self.content_frame, text="DELETE", command=remove_item_in_gudang, style="form_style.TButton")
+        delete_button.pack(padx=100, pady=20, fill=tk.X)
 
     def search_item(self):
         self.clear_content_frame()
+
+        # <---------------- FORM NAME ---------------->
+        frame_name = ttk.Frame(self.content_frame, style="form_style.TFrame")
+        frame_name.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
         
-        label_name = tk.Label(self.content_frame, text="Masukan Nama Yang Ingin Anda Cari!")
-        label_name.pack(padx=10, pady=10)
+        label_name = ttk.Label(frame_name, text="Masukan Nama Yang Ingin Anda Cari!", style="form_style.TLabel")
+        label_name.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
         
-        name_entry = tk.Entry(self.content_frame)
-        name_entry.pack(padx=10, pady=10)
+        name_entry = ttk.Entry(frame_name)
+        name_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
 
         def display_item_in_gudang():
-            name = name_entry.get().strip()  # Get the name when the button is clicked
+            name = name_entry.get().strip()
             items = self.gudang.searchByName(name)
             
             if items:
-                self.content_text = tk.Text(self.content_frame)
-                self.content_text.pack(fill=tk.BOTH, expand=True)
-                self.content_text.delete(1.0, tk.END)
                 messagebox.showinfo("Sukses", "Data ditemukan")
-                
-                for item in items:
-                    self.content_text.insert(tk.END, f"ID: {item.id}\n")
-                    self.content_text.insert(tk.END, f"Nama: {item.name}\n")
-                    self.content_text.insert(tk.END, f"Jumlah: {item.quantity}\n")
-                    self.content_text.insert(tk.END, f"Harga: {item.price}\n")
-                    self.content_text.insert(tk.END, "\n")
+                for item in items: # dapet nya objek
+                    frame_info = ttk.Frame(self.content_frame, style="list_items.TLabel")
+                    frame_info.pack(side=tk.TOP, padx=20, pady=20)
+                    
+                    id = ttk.Label(frame_info, style="list_items.TLabel", text=f"Id Barang : {item.id}")
+                    id.pack(side=tk.LEFT, padx=20, pady=20, fill=tk.X, expand=True)
+                    
+                    nama = ttk.Label(frame_info, style="list_items.TLabel", text=f"Nama Barang : {item.name}")
+                    nama.pack(side=tk.LEFT, padx=20, pady=20, fill=tk.X, expand=True)
+                    
+                    quantity = ttk.Label(frame_info, style="list_items.TLabel", text=f"Quantity Barang : {item.quantity}")
+                    quantity.pack(side=tk.LEFT, padx=20, pady=20, fill=tk.X, expand=True)
+                    
+                    price = ttk.Label(frame_info, style="list_items.TLabel", text=f"Price Barang : {item.price}")
+                    price.pack(side=tk.LEFT, padx=20, pady=20, fill=tk.X, expand=True)
+                    
+                    
+                    
+                    # ttk.Label(self.content_frame, style="list_items.TLabel", text=f"           Id Barang : {item.id}\t\t Nama Barang : {item.name}\t              Jumlah Barang : {item.quantity}\t              Harga Barang : {item.price}    ").pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
             else:
                 messagebox.showerror("Error", "Nama tidak ditemukan")
         
-        search_button = tk.Button(self.content_frame, text="FIND", command=display_item_in_gudang)
-        search_button.pack(padx=10, pady=10)
+        search_button = ttk.Button(self.content_frame, text="FIND", command=display_item_in_gudang, style="general_style.TButton")
+        search_button.pack(padx=100, pady=20, fill=tk.X)
         
     def update_item(self):
         self.clear_content_frame()
 
-        # Entry for item ID
-        label_id = tk.Label(self.content_frame, text="Masukkan ID yang ingin diperbarui:")
-        label_id.pack(padx=10, pady=10)
-
-        id_entry = tk.Entry(self.content_frame)
-        id_entry.pack(padx=10, pady=10)
-
-        # Entry for new name
-        label_new_name = tk.Label(self.content_frame, text="Nama baru (kosongkan jika tidak ingin mengubah):")
-        label_new_name.pack(padx=10, pady=10)
-
-        new_name_entry = tk.Entry(self.content_frame)
-        new_name_entry.pack(padx=10, pady=10)
-
-        # Entry for new quantity
-        label_new_quantity = tk.Label(self.content_frame, text="Jumlah baru (kosongkan jika tidak ingin mengubah):")
-        label_new_quantity.pack(padx=10, pady=10)
-
-        new_quantity_entry = tk.Entry(self.content_frame)
-        new_quantity_entry.pack(padx=10, pady=10)
-
-        # Entry for new price
-        label_new_price = tk.Label(self.content_frame, text="Harga baru (kosongkan jika tidak ingin mengubah):")
-        label_new_price.pack(padx=10, pady=10)
-
-        new_price_entry = tk.Entry(self.content_frame)
-        new_price_entry.pack(padx=10, pady=10)
+        # <---------------- FORM ID ---------------->
+        frame_id = ttk.Frame(self.content_frame, style="form_style.TFrame")
+        frame_id.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
+        
+        label_id = ttk.Label(frame_id, text="Masukkan ID yang ingin diperbarui:", style="form_style.TLabel")
+        label_id.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
+        
+        id_entry = ttk.Entry(frame_id)
+        id_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
+        
+        # <---------------- FORM NAME ---------------->
+        frame_name = ttk.Frame(self.content_frame, style="form_style.TFrame")
+        frame_name.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
+        
+        label_name = ttk.Label(frame_name, text="Nama baru (kosongkan jika tidak ingin mengubah):", style="form_style.TLabel")
+        label_name.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
+        
+        name_entry = ttk.Entry(frame_name)
+        name_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
+        
+        # <---------------- FORM QUANTITY ---------------->
+        frame_quantity = ttk.Frame(self.content_frame, style="form_style.TFrame")
+        frame_quantity.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
+        
+        label_quantity = ttk.Label(frame_quantity, text="Jumlah baru (kosongkan jika tidak ingin mengubah):", style="form_style.TLabel")
+        label_quantity.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
+        
+        quantity_entry = ttk.Entry(frame_quantity)
+        quantity_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
+        
+        # <---------------- FORM PRICE ---------------->
+        frame_price = ttk.Frame(self.content_frame, style="form_style.TFrame")
+        frame_price.pack(side=tk.TOP, padx=100, pady=25, fill=tk.X)
+        
+        label_price = ttk.Label(frame_price, text="Harga baru (kosongkan jika tidak ingin mengubah):", style="form_style.TLabel")
+        label_price.pack(padx=10, pady=10, side=tk.LEFT, expand=True)
+        
+        price_entry = ttk.Entry(frame_price)
+        price_entry.pack(padx=10, pady=10, side=tk.LEFT, expand=True, fill="x")
+        
 
         def update_item_in_gudang():
             item_id = id_entry.get().strip()
-            new_name = new_name_entry.get().strip()
-            new_quantity_str = new_quantity_entry.get().strip()
-            new_price_str = new_price_entry.get().strip()
+            new_name = name_entry.get().strip()
+            new_quantity_str = quantity_entry.get().strip()
+            new_price_str = price_entry.get().strip()
 
             item = self.gudang.SearchItemById(item_id)
             if item:
@@ -408,8 +457,8 @@ class GudangApp(tk.Tk):
             else:
                 messagebox.showerror("Error", "ID tidak ditemukan")
 
-        update_button = tk.Button(self.content_frame, text="UPDATE", command=update_item_in_gudang)
-        update_button.pack(padx=10, pady=10)
+        update_button = ttk.Button(self.content_frame, text="UPDATE", command=update_item_in_gudang, style="general_style.TButton")
+        update_button.pack(padx=100, pady=20, fill=tk.X)
 
     def sort_by_price(self):
         self.clear_content_frame()
