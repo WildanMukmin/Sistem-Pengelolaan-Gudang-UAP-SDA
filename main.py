@@ -210,15 +210,6 @@ class GudangApp(tk.Tk):
         self.btn_update_item = ttk.Button(self.nav_frame, text="Update Item", command=self.update_item, style='TButton')
         self.btn_update_item.pack(side=tk.LEFT, padx=5, pady=5)
         
-        self.btn_sort_price = ttk.Button(self.nav_frame, text="Sort by Price", command=self.sort_by_price, style='TButton')
-        self.btn_sort_price.pack(side=tk.RIGHT, padx=5, pady=5)
-        
-        self.btn_sort_quantity = ttk.Button(self.nav_frame, text="Sort by Quantity", command=self.sort_by_quantity, style='TButton')
-        self.btn_sort_quantity.pack(side=tk.RIGHT, padx=5, pady=5)
-        
-        self.btn_sort_id = ttk.Button(self.nav_frame, text="Sort by ID", command=self.sort_by_id, style='TButton')
-        self.btn_sort_id.pack(side=tk.RIGHT, padx=5, pady=5)
-        
         
     def clear_content_frame(self):
         for widget in self.content_frame.winfo_children():
@@ -226,6 +217,19 @@ class GudangApp(tk.Tk):
 
     def display_all(self):
         self.clear_content_frame()
+        
+        # <----------------- GENERATE NAV SORT ----------------->
+        self.nav_frame_sort = tk.Frame(self.content_frame, height=40, bg="#175227")
+        self.nav_frame_sort.pack(side=tk.BOTTOM, fill=tk.X)
+        
+        self.btn_sort_price = ttk.Button(self.nav_frame_sort, text="Sort by Price", command=self.sort_by_price, style='TButton')
+        self.btn_sort_price.pack(side=tk.RIGHT, padx=5, pady=5)
+        
+        self.btn_sort_quantity = ttk.Button(self.nav_frame_sort, text="Sort by Quantity", command=self.sort_by_quantity, style='TButton')
+        self.btn_sort_quantity.pack(side=tk.RIGHT, padx=5, pady=5)
+        
+        self.btn_sort_id = ttk.Button(self.nav_frame_sort, text="Sort by ID", command=self.sort_by_id, style='TButton')
+        self.btn_sort_id.pack(side=tk.RIGHT, padx=5, pady=5)      
         
         self.canvas_content_frame = tk.Canvas(self.content_frame, bg="#7d807e")
         self.canvas_content_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=40, pady=5)
