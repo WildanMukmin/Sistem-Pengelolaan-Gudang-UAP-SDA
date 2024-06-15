@@ -83,12 +83,8 @@ class Item:
         return [self.id, self.name, self.quantity, self.price]
 
 class Gudang:
-    next_id = 1
-
     def __init__(self):
         self.items = readFileCsv("items.csv")
-        if self.items:
-            Gudang.next_id = len(self.items) + 1
 
     def getAllproduct(self):
         return [item.to_list() for item in self.items]
@@ -124,18 +120,17 @@ class Gudang:
             self.updateFileCsv()
 
     def addItem(self, name, quantity, price):
-        self.next_id += 1
+        self.sortById()
+        self.next_id = int(self.items[-1].to_list()[0]) + 1
         self.items.append(Item(str(self.next_id), name, quantity, price))
         self.updateFileCsv()
         
     def removeItemByName(self, name):
         self.items = [item for item in self.items if item.name != name]
-        self.next_id += 1
         self.updateFileCsv()
     
     def removeItemById(self, id):
         self.items = [item for item in self.items if item.id != id]
-        self.next_id += 1
         self.updateFileCsv()
     
     def updateFileCsv(self):
