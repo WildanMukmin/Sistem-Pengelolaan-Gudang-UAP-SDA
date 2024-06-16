@@ -173,41 +173,41 @@ class GudangApp(tk.Tk):
         
         self.gudang = gudang
         self.title("Gudang Inventory Management")
-        self.geometry("1000x600")
+        self.geometry("1365x700")
+        # self.attributes('-fullscreen', True)
         # self.resizable(False, False)
         
         # <---------------------- ALL STYLE CONFIGURE ---------------------->
-        self.general_style = ttk.Style(self)
-        self.form_style = ttk.Style(self)
-        self.style_list_items = ttk.Style(self)
+        self.style = ttk.Style(self)
         
         # <---------------------- STYLE FRAME ---------------------->
-        self.general_style.configure("general_style.TFrame", background="lightblue")
-        self.form_style.configure("form_style.TFrame", background="#267c91")
+        self.style.configure("general_style.TFrame", background="#1064a3")
+        self.style.configure("form_style.TFrame", background="#3194eb")
+        self.style.configure("nav_style.TFrame", background="#1064a3")
         
         # <---------------------- STYLE LABEL ---------------------->
-        self.general_style.configure("general_style.TLabel", background="lightblue", font=("Arial", 12))
-        self.form_style.configure("form_style.TLabel", background="#267c91", font=("Arial", 12))
+        self.style.configure("general_style.TLabel", background="lightblue", font=("Arial", 12))
+        self.style.configure("form_style.TLabel", background="#3194eb", font=("Arial", 12), foreground='white')
         
         # <---------------------- STYLE ENTRY ---------------------->
-        self.general_style.configure("general_style.TEntry", font=("Arial", 12))
-        self.form_style.configure("form_style.TEntry", font=("Arial", 12))
+        self.style.configure("general_style.TEntry", font=("Arial", 12))
+        self.style.configure("form_style.TEntry", font=("Arial", 12))
         
         # <---------------------- STYLE BUTTON ---------------------->
-        self.general_style.configure('general_style.TButton', font=('Helvetica', 6), relief='flat', background='#000000', foreground='black')
-        self.form_style.configure('form_style.TButton', font=('Helvetica', 6), relief='flat', background='#000000', foreground='black')
+        self.style.configure('general_style.TButton', font=('Helvetica', 6), relief='flat', background='#000000', foreground='black')
+        self.style.configure('form_style.TButton', font=('Helvetica', 6), relief='flat', background='#000000', foreground='black')
         
         # <---------------------- STYLE LIST ITEM ---------------------->
-        self.style_list_items.configure('list_items.TLabel', font=('Helvetica', 10, 'bold'), background='#f0f0f0', foreground='#333333',padding=10)
+        self.style.configure('list_items.TLabel', font=('Helvetica', 10, 'bold'), background='#f0f0f0', foreground='#333333',padding=10)
         
         self.create_widgets()
 
     def create_widgets(self):
         style_button_nav = ttk.Style()
-        style_button_nav.configure('TButton', font=('Helvetica', 8), padding=6, relief='flat', background='#000000', foreground='black')
+        style_button_nav.configure('TButton', font=('Helvetica', 8), padding=6, background='#000000', foreground='black')
         
         # <----------------- GENERATE NAV FRAME ----------------->
-        self.nav_frame = ttk.Frame(self, height=40, style="general_style.TFrame")
+        self.nav_frame = ttk.Frame(self, height=40, style="nav_style.TFrame")
         self.nav_frame.pack(side=tk.TOP, fill=tk.X)
 
         # <----------------- GENERATE CONTENT FRAME ----------------->
@@ -237,6 +237,8 @@ class GudangApp(tk.Tk):
         for widget in self.content_frame.winfo_children():
             widget.destroy()
 
+    # def home(self):
+
     def display_all(self):
         self.clear_content_frame()
         
@@ -253,7 +255,7 @@ class GudangApp(tk.Tk):
         self.btn_sort_id = ttk.Button(self.nav_frame_sort, text="Sort by ID", command=self.sort_by_id, style='TButton')
         self.btn_sort_id.pack(side=tk.RIGHT, padx=5, pady=5)      
         
-        self.canvas_content_frame = tk.Canvas(self.content_frame, bg="lightblue")
+        self.canvas_content_frame = tk.Canvas(self.content_frame, bg="#1064a3")
         self.canvas_content_frame.pack(side=tk.LEFT, fill="both", expand=True, padx=10, pady=10)
         
         self.canvas_content_frame_scrolbar = ttk.Scrollbar(self.content_frame, orient=tk.VERTICAL, command=self.canvas_content_frame.yview)
@@ -264,12 +266,12 @@ class GudangApp(tk.Tk):
         
         self.box_detail_item = ttk.Frame(self.canvas_content_frame, height=30, style="general_style.TFrame")
         
-        self.canvas_content_frame.create_window((0,0), window=self.box_detail_item, anchor=tk.NW)
+        self.canvas_content_frame.create_window((100,20), window=self.box_detail_item, anchor=tk.NW)
         
         products = self.gudang.getAllproduct()
 
         for product in products:
-            self.box_info = ttk.Label(self.box_detail_item,style="list_items.TLabel" ,text=f"    Id Barang : {product[0]},\t\t Nama Barang : {product[1]},\t\t Jumlah Barang : {product[2]},\t\t Harga Barang : {product[3]}    ").pack(side=tk.TOP, padx=50, pady=6, fill=tk.BOTH)     
+            self.box_info = ttk.Label(self.box_detail_item,style="list_items.TLabel" ,text=f"    Id Barang : {product[0]}\t\t\t\t Nama Barang : {product[1]}\t\t\t\t Jumlah Barang : {product[2]}\t\t\t\t Harga Barang : {product[3]}    ").pack(side=tk.TOP, pady=6, fill=tk.BOTH)     
         
     def add_item(self):
         self.clear_content_frame()
