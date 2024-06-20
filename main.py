@@ -15,7 +15,6 @@ def readFileCsv(fileName):
                 if len(row) == 4:
                     items.append(Item(row[0], row[1], int(row[2]), int(row[3])))
     except FileNotFoundError:
-        # Handle the case where the file does not exist
         pass
     return items
 
@@ -482,5 +481,5 @@ class GudangApp(tk.Tk):
 gudang = Gudang()
 app = GudangApp(gudang)
 app.mainloop()
-# <---------------------- End Main program ---------------------->
 
+# <---------------------- End Main program ---------------------->
