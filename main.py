@@ -478,9 +478,9 @@ class GudangApp(tk.Tk):
         self.display_all()
 
 # <---------------------- Main program ---------------------->
-if __name__ == "__main__":
-    gudang = Gudang()
-    app = GudangApp(gudang)
-    app.mainloop()
+
+gudang = Gudang()
+app = GudangApp(gudang)
+app.mainloop()
 # <---------------------- End Main program ---------------------->
 
